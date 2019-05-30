@@ -28,6 +28,10 @@ const char op_div_string[] = "DIV";
 const char op_and_string[] = "AND";
 const char op_or_string[] = "OR";
 const char op_not_string[] = "NOT";
+const char op_equal_string[] = "EQUAL";
+const char op_less_string[] = "LESS";
+const char op_greater_string[] = "GREATER";
+
 
 const char operators[]="+-*/&|!=<>";
 
@@ -113,6 +117,9 @@ char tokenize(char *word, int length, token *new_token)
   if(!strncmp(name, op_and_string, 3)){new_token->type = _operator; new_token->type_2.operator_type = _and; return 1;};
   if(!strncmp(name, op_or_string, 2)){new_token->type = _operator; new_token->type_2.operator_type = _or; return 1;};
   if(!strncmp(name, op_not_string, 3)){new_token->type = _operator; new_token->type_2.operator_type = _not; return 1;};
+  if(!strncmp(name, op_equal_string, 5)){new_token->type = _operator; new_token->type_2.operator_type = _equal; return 1;};
+  if(!strncmp(name, op_less_string, 4)){new_token->type = _operator; new_token->type_2.operator_type = _less; return 1;};
+  if(!strncmp(name, op_greater_string, 7)){new_token->type = _operator; new_token->type_2.operator_type = _greater; return 1;};
 
   if(!strncmp(name, func_string, 4)){new_token->type = _keyword; new_token->type_2.keyword_type = _func; return 1;};
   if(!strncmp(name, begin_string, 5)){new_token->type = _keyword; new_token->type_2.keyword_type = _begin; return 1;};
