@@ -163,7 +163,7 @@ node *build_tree_sub(token *tokens, int token_number,
           new_node->data.s_node_if.lbody = body;
           current = body;
 
-          while(tokens[index1].type != _keyword || tokens[index1].type_2.keyword_type != _else)
+          while(tokens[index1].type != _keyword || (tokens[index1].type_2.keyword_type != _else && tokens[index1].type_2.keyword_type != _fi))
           {
             old_var_num = var_num;
 
@@ -177,27 +177,35 @@ node *build_tree_sub(token *tokens, int token_number,
             if(index1 == token_number)
               error("EOF reached while looking for if else.", index1);
           }
-
-          index1++;
-          body = (node*)malloc(sizeof(node));
-          body->type = node_body;
-          body->next = NULL;
-          new_node->data.s_node_if.rbody = body;
-          current = body;
-
-          while(tokens[index1].type != _keyword || tokens[index1].type_2.keyword_type != _fi)
+          
+          if(tokens[index1].type_2.keyword_type == _else)
           {
-            old_var_num = var_num;
+            index1++;
+            body = (node*)malloc(sizeof(node));
+            body->type = node_body;
+            body->next = NULL;
+            new_node->data.s_node_if.rbody = body;
+            current = body;
 
-            current->next = build_tree_sub(tokens, token_number, index1, &index2, functions, &func_num, variables, &var_num);
-            current = current->next;
+            while(tokens[index1].type != _keyword || tokens[index1].type_2.keyword_type != _fi)
+            {
+              old_var_num = var_num;
 
-            if(current->type != node_var_decl) var_num = old_var_num;
+              current->next = build_tree_sub(tokens, token_number, index1, &index2, functions, &func_num, variables, &var_num);
+              current = current->next;
 
-            index1 = index2;
+              if(current->type != node_var_decl) var_num = old_var_num;
 
-            if(index1 == token_number)
-              error("EOF reached while looking for if fi.", index1);
+              index1 = index2;
+
+              if(index1 == token_number)
+                error("EOF reached while looking for if fi.", index1);
+            }
+          }
+          else
+          {
+            index1++;
+            new_node->data.s_node_if.rbody = NULL;
           }
         break;
         case _var:
@@ -333,7 +341,9 @@ node *build_tree_sub(token *tokens, int token_number,
           
        break;
       }
-    break; 
+    break;
+    default:
+      error("syntax error.", index1);
   }
 
   index1++;
