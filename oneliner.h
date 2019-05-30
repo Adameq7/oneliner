@@ -1,3 +1,6 @@
+#ifndef _ONELINER_H
+#define _ONELINER_H 1
+
 #define MAX_FUNC_NUM 128
 #define MAX_VAR_NUM 1024
 #define MAX_FUNC_ARG_NUM 16
@@ -49,7 +52,7 @@ typedef enum
   _div,
   _and,
   _or,
-  _not,
+//  _not,
   _equal,
   _less,
   _greater
@@ -154,3 +157,23 @@ typedef struct
   char *name;
   double val;
 } var;
+
+var *create_var(var*, int*, char*);
+void create_func(func*, int*, char*, node*);
+func* is_function(char*, func*, int);
+var* is_variable(char*, var*, int);
+char is_forbidden(char);
+char is_number(char*, int);
+char is_lowercase(char);
+char is_uppercase(char);
+char tokenize(char*, int, token*);
+void parse_line(char*, token*, int*);
+void error(char*, int);
+node* build_tree_sub(token*, int, int, int*, func*, int*, var*, int*);
+node *build_tree(token*, int, func*, int*, var*, int*);
+void tabs(int);
+void print_tree(node*, int);
+void print_out(node*, var*, int);
+double execute(node*, func* functions, int, var*, int*, char*);
+
+#endif
