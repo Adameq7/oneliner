@@ -318,7 +318,6 @@ node *build_tree_sub(token *tokens, int token_number,
 
           index1++;
  
- 
           if(tokens[index1].type == _identifier)
           {
             new_node->data.s_node_print.is_arg = 1;
@@ -338,7 +337,19 @@ node *build_tree_sub(token *tokens, int token_number,
           }
           else
             error("value to print must be a variable, number or string.", index1);
-          
+  
+          index1++;
+
+          if((tokens[index1].type == _keyword) && (tokens[index1].type_2.keyword_type == _newline))
+          {
+            new_node->data.s_node_print.newline = 1;
+          }
+          else
+          {
+            new_node->data.s_node_print.newline = 0;
+            index1--;
+          }
+        
        break;
       }
     break;

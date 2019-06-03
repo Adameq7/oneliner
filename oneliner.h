@@ -42,6 +42,7 @@ typedef enum
   _set,
   _print,
   _return,
+  _newline
 } _keyword_type;
 
 typedef enum
@@ -134,6 +135,7 @@ struct node
       char is_arg;
       arg arg1;
       char *message;
+      char newline;
     } s_node_print;
     struct
     {

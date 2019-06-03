@@ -36,9 +36,12 @@ int main(int argc, char **argv)
     print_tree(root, 0);
 
     var_num = 0;
-    res = execute(is_function("main", functions, func_num)->func_decl_node->data.s_node_func_decl.body, functions, func_num, variables, &var_num, NULL);
-    printf("program ended with return %lf\n", res);
 
+    printf("\nBEGIN EXECUTION:\n\n");
+    res = execute(is_function("main", functions, func_num)->func_decl_node->data.s_node_func_decl.body, functions, func_num, variables, &var_num, NULL);
+    printf("\n\nEND EXECUTION.\n\n");
+
+//    printf("program ended with return %lf\n", res);
     free(line);
   }
 

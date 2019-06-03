@@ -106,6 +106,9 @@ void print_tree(node *root, int n)
       }
       else
         printf("%s", root->data.s_node_print.message);
+
+      if(root->data.s_node_print.newline)
+        printf(" | newline");
       printf("\n"); 
 //      printf("print something.\n");
     break;
@@ -120,7 +123,7 @@ void print_out(node *root, var *variables, int var_num)
 {
   double val;
 
-  printf("OUT:\t");
+//  printf("OUT:\t");
 
   if(root->data.s_node_print.is_arg)
   {
@@ -132,10 +135,14 @@ void print_out(node *root, var *variables, int var_num)
     {
       val = root->data.s_node_print.arg1.data.val;
     }
+    
+    printf("%lf ", val);
   }
   else
   {
+    printf("%s ", root->data.s_node_print.message);
   }
 
-  printf("%lf\n", val);
+  if(root->data.s_node_print.newline)
+    printf("\n");
 }
