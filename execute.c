@@ -1,13 +1,18 @@
 #include <stdlib.h>
 #include "oneliner.h"
 
-double execute(node *root, func *functions, int func_num, var *variables, int *var_num, char* ret_var)
+double execute(node *root, func *functions, int func_num, var *variables, int *var_num, char* ret_var, double* memory)
 {
+/*
+  for(int i = 0; i < *var_num; i++)
+    printf("| %s = %lf ", variables[i].name, variables[i].val);
+  printf("\n");
+*/
   if(root == NULL)
     return 0;
 
   double arg_vals[MAX_FUNC_ARG_NUM];
-  int new_var_num = *var_num;
+  int new_var_num = *var_num, index;
   double ret_val = 0, val1, val2;
   var *var1, *var2;
   func *function;
@@ -20,7 +25,7 @@ double execute(node *root, func *functions, int func_num, var *variables, int *v
 
       while(current != NULL)
       {
-        execute(current, functions, func_num, variables, &new_var_num, NULL);
+        execute(current, functions, func_num, variables, &new_var_num, NULL, memory);
 
         current = current->next;
       }
@@ -36,7 +41,7 @@ double execute(node *root, func *functions, int func_num, var *variables, int *v
 
       while((int)var1->val)
       {
-        execute(root->data.s_node_while.body, functions, func_num, variables, &new_var_num, NULL);
+        execute(root->data.s_node_while.body, functions, func_num, variables, &new_var_num, NULL, memory);
       }
     break;
     case node_if:
@@ -44,15 +49,38 @@ double execute(node *root, func *functions, int func_num, var *variables, int *v
 
       if((int)var1->val)
       {
-        execute(root->data.s_node_if.lbody, functions, func_num, variables, &new_var_num, NULL);
+        execute(root->data.s_node_if.lbody, functions, func_num, variables, &new_var_num, NULL, memory);
       }
       else
       {
-        execute(root->data.s_node_if.rbody, functions, func_num, variables, &new_var_num, NULL);
+        execute(root->data.s_node_if.rbody, functions, func_num, variables, &new_var_num, NULL, memory);
       }
     break;
     case node_var_decl:
       create_var(variables, var_num, root->data.s_node_var_decl.var_name);
+    break;
+    case node_mem_op:
+      if(root->data.s_node_mem_op.is_read)
+      {
+        if(root->data.s_node_mem_op.arg1.is_var)
+          index = is_variable(root->data.s_node_mem_op.arg1.data.name, variables, new_var_num)->val;
+        else
+          index = (int)root->data.s_node_mem_op.arg1.data.val;
+
+        is_variable(root->data.s_node_mem_op.arg2.data.name, variables, new_var_num)->val = memory[index];
+      }
+      else
+      {
+        if(root->data.s_node_mem_op.arg1.is_var)
+          index = is_variable(root->data.s_node_mem_op.arg1.data.name, variables, new_var_num)->val;
+        else
+          index = (int)root->data.s_node_mem_op.arg1.data.val;
+
+        if(root->data.s_node_mem_op.arg2.is_var)
+          memory[index] = is_variable(root->data.s_node_mem_op.arg2.data.name, variables, new_var_num)->val;
+        else
+          memory[index] = root->data.s_node_mem_op.arg2.data.val;
+      }
     break;
     case node_var_set:
       var1 = is_variable(root->data.s_node_var_set.var_name, variables, new_var_num); 
@@ -71,7 +99,7 @@ double execute(node *root, func *functions, int func_num, var *variables, int *v
           for(int i = 0; i < function->func_decl_node->data.s_node_func_decl.arg_num; i++)
             create_var(variables, &new_var_num, function->func_decl_node->data.s_node_func_decl.arg_name[i])->val = arg_vals[i];
 
-          ret_val = execute(function->func_decl_node->data.s_node_func_decl.body, functions, func_num, variables, &new_var_num, function->func_decl_node->data.s_node_func_decl.ret_val);
+          ret_val = execute(function->func_decl_node->data.s_node_func_decl.body, functions, func_num, variables, &new_var_num, function->func_decl_node->data.s_node_func_decl.ret_val, memory);
           var1->val = ret_val;
         break;
         case 1:

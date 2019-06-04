@@ -5,12 +5,14 @@
 node *build_tree_sub(token *tokens, int token_number, 
                      int s_index1, int *s_index2,
                      func *functions, int *s_func_num,
-                     var *variables, int *s_var_num)
+                     var *variables, int *s_var_num,
+                     void **pointers, int *pointer_num)
 {
   int index1 = s_index1,
       index2;
   node *new_node = (node*)malloc(sizeof(node)),
        *current, *body;
+  add_ptr(new_node, pointers, pointer_num);
 
   int func_num = *s_func_num;
   int var_num = *s_var_num, old_var_num;
@@ -49,6 +51,7 @@ node *build_tree_sub(token *tokens, int token_number,
           }
 
           new_node->data.s_node_func_decl.arg_name = (char**)malloc(new_node->data.s_node_func_decl.arg_num * sizeof(char*));
+          add_ptr(new_node->data.s_node_func_decl.arg_name, pointers, pointer_num);
 
           for(int i = s_index1 + 2; i < index1; i++)
           {
@@ -59,6 +62,7 @@ node *build_tree_sub(token *tokens, int token_number,
           index1++;
 //          index2 = index1;
           body = (node*)malloc(sizeof(node));
+          add_ptr(body, pointers, pointer_num);
           body->type = node_body;
           body->next = NULL;
           new_node->data.s_node_func_decl.body = body;
@@ -68,7 +72,7 @@ node *build_tree_sub(token *tokens, int token_number,
           {
             old_var_num = var_num;
 
-            current->next = build_tree_sub(tokens, token_number, index1, &index2, functions, &func_num, variables, &var_num);
+            current->next = build_tree_sub(tokens, token_number, index1, &index2, functions, &func_num, variables, &var_num, pointers, pointer_num);
             current = current->next;
 
             if(current->type != node_var_decl) var_num = old_var_num;
@@ -126,6 +130,7 @@ node *build_tree_sub(token *tokens, int token_number,
 
           index1++;
           body = (node*)malloc(sizeof(node));
+          add_ptr(body, pointers, pointer_num);
           body->type = node_body;
           body->next = NULL;
           new_node->data.s_node_while.body = body;
@@ -135,7 +140,7 @@ node *build_tree_sub(token *tokens, int token_number,
           {
             old_var_num = var_num;
 
-            current->next = build_tree_sub(tokens, token_number, index1, &index2, functions, &func_num, variables, &var_num);
+            current->next = build_tree_sub(tokens, token_number, index1, &index2, functions, &func_num, variables, &var_num, pointers, pointer_num);
             current = current->next;
 
             if(current->type != node_var_decl) var_num = old_var_num;
@@ -158,6 +163,7 @@ node *build_tree_sub(token *tokens, int token_number,
 
           index1++;
           body = (node*)malloc(sizeof(node));
+          add_ptr(body, pointers, pointer_num);
           body->type = node_body;
           body->next = NULL;
           new_node->data.s_node_if.lbody = body;
@@ -167,7 +173,7 @@ node *build_tree_sub(token *tokens, int token_number,
           {
             old_var_num = var_num;
 
-            current->next = build_tree_sub(tokens, token_number, index1, &index2, functions, &func_num, variables, &var_num);
+            current->next = build_tree_sub(tokens, token_number, index1, &index2, functions, &func_num, variables, &var_num, pointers, pointer_num);
             current = current->next;
 
             if(current->type != node_var_decl) var_num = old_var_num;
@@ -182,6 +188,7 @@ node *build_tree_sub(token *tokens, int token_number,
           {
             index1++;
             body = (node*)malloc(sizeof(node));
+            add_ptr(body, pointers, pointer_num);
             body->type = node_body;
             body->next = NULL;
             new_node->data.s_node_if.rbody = body;
@@ -191,7 +198,7 @@ node *build_tree_sub(token *tokens, int token_number,
             {
               old_var_num = var_num;
 
-              current->next = build_tree_sub(tokens, token_number, index1, &index2, functions, &func_num, variables, &var_num);
+              current->next = build_tree_sub(tokens, token_number, index1, &index2, functions, &func_num, variables, &var_num, pointers, pointer_num);
               current = current->next;
 
               if(current->type != node_var_decl) var_num = old_var_num;
@@ -249,6 +256,7 @@ node *build_tree_sub(token *tokens, int token_number,
             new_node->data.s_node_var_set.body.func.name = f->name;
             new_node->data.s_node_var_set.body.func.arg_num = f->func_decl_node->data.s_node_func_decl.arg_num;
             new_node->data.s_node_var_set.body.func.args = (arg*)malloc((f->func_decl_node->data.s_node_func_decl.arg_num) * sizeof(arg));
+            add_ptr(new_node->data.s_node_var_set.body.func.args, pointers, pointer_num);
 
             for(int i = 0; i < f->func_decl_node->data.s_node_func_decl.arg_num; i++)
             {
@@ -293,24 +301,92 @@ node *build_tree_sub(token *tokens, int token_number,
             }
             else
               error("argument must be a number or a variable.", index1);
+
+            if(new_node->data.s_node_var_set.body.operation.operation != _not) 
+            {         
+              index1++;
              
-            index1++;
-           
-            if(is_variable(tokens[index1].name, variables, var_num))
-            {
-              new_node->data.s_node_var_set.body.operation.arg2.is_var = 1;
-              new_node->data.s_node_var_set.body.operation.arg2.data.name = tokens[index1].name;
+              if(is_variable(tokens[index1].name, variables, var_num))
+              {
+                new_node->data.s_node_var_set.body.operation.arg2.is_var = 1;
+                new_node->data.s_node_var_set.body.operation.arg2.data.name = tokens[index1].name;
+              }
+              else if(tokens[index1].type == _number)
+              {
+                new_node->data.s_node_var_set.body.operation.arg2.is_var = 0;
+                new_node->data.s_node_var_set.body.operation.arg2.data.val = strtod(tokens[index1].name, NULL);
+              }
+              else
+                error("argument must be a number or a variable.", index1);
             }
-            else if(tokens[index1].type == _number)
-            {
-              new_node->data.s_node_var_set.body.operation.arg2.is_var = 0;
-              new_node->data.s_node_var_set.body.operation.arg2.data.val = strtod(tokens[index1].name, NULL);
-            }
-            else
-              error("argument must be a number or a variable.", index1);
           }
           else
             error("incorrect set syntax.", index1);
+
+        break;
+        case _read:
+          new_node->type = node_mem_op;
+
+          index1++;
+
+          new_node->data.s_node_mem_op.is_read = 1;
+
+          if(tokens[index1].type == _identifier)
+          {
+            new_node->data.s_node_mem_op.arg1.is_var = 1;
+            new_node->data.s_node_mem_op.arg1.data.name = tokens[index1].name;
+          }
+          else if(tokens[index1].type == _number)
+          {
+            new_node->data.s_node_mem_op.arg1.is_var = 0;
+            new_node->data.s_node_mem_op.arg1.data.val = strtod(tokens[index1].name, NULL);
+          }
+          else
+            error("index must be a variable or a number.", index1);
+
+          index1++;
+
+          if(tokens[index1].type != _identifier)
+            error("memory must be read into a variable.", index1);
+
+          new_node->data.s_node_mem_op.arg2.is_var = 1;
+          new_node->data.s_node_mem_op.arg2.data.name = tokens[index1].name;
+
+        break;
+        case _write:
+          new_node->type = node_mem_op;
+
+          index1++;
+
+          new_node->data.s_node_mem_op.is_read = 0;
+
+          if(tokens[index1].type == _identifier)
+          {
+            new_node->data.s_node_mem_op.arg1.is_var = 1;
+            new_node->data.s_node_mem_op.arg1.data.name = tokens[index1].name;
+          }
+          else if(tokens[index1].type == _number)
+          {
+            new_node->data.s_node_mem_op.arg1.is_var = 0;
+            new_node->data.s_node_mem_op.arg1.data.val = strtod(tokens[index1].name, NULL);
+          }
+          else
+            error("index must be a variable or a number.", index1);
+
+          index1++;
+
+          if(tokens[index1].type == _identifier)
+          {
+            new_node->data.s_node_mem_op.arg2.is_var = 1;
+            new_node->data.s_node_mem_op.arg2.data.name = tokens[index1].name;
+          }
+          else if(tokens[index1].type == _number)
+          {
+            new_node->data.s_node_mem_op.arg2.is_var = 0;
+            new_node->data.s_node_mem_op.arg2.data.val = strtod(tokens[index1].name, NULL);
+          }
+          else
+            error("value to write must be a variable or a number.", index1);
 
         break;
         case _print:
@@ -364,7 +440,8 @@ node *build_tree_sub(token *tokens, int token_number,
 
 node *build_tree(token *tokens, int token_number,
                  func *functions, int *func_num,
-                 var *variables, int *var_num)
+                 var *variables, int *var_num, 
+                 void **pointers, int *pointer_num)
 {
   int index1 = 1,
       index2 = 2;
@@ -375,6 +452,7 @@ node *build_tree(token *tokens, int token_number,
   {printf("program doesn't end with PROGRAMEND\n"); exit(-1);};
 
   node *root = (node*)(malloc(sizeof(node)));
+  add_ptr(root, pointers, pointer_num);
 
   node *current;
   current = root;
@@ -384,13 +462,16 @@ node *build_tree(token *tokens, int token_number,
 
   while(index2 < token_number - 1)
   {
-    current->next = build_tree_sub(tokens, token_number, index2, &index2, functions, func_num, variables, var_num);
+    current->next = build_tree_sub(tokens, token_number, index2, &index2, functions, func_num, variables, var_num, pointers, pointer_num);
     current = current->next;
     current->next = NULL;
   }
 
   root->type = node_body;
 //  root->data.s_node_body
+
+  if(!is_function("main", functions, *func_num))
+    error("main function not declared", -1);
 
   return root;
 }

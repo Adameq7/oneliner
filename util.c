@@ -75,3 +75,12 @@ void tabs(int n)
   for(int i = 0; i < n; i++) printf("  ");
   return;
 }
+
+void add_ptr(void *ptr, void **pointers, int *pointer_num)
+{
+  pointers[*pointer_num] = ptr;
+
+  *pointer_num++;
+
+  return;
+}

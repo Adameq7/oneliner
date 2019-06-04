@@ -94,15 +94,47 @@ void print_tree(node *root, int n)
         break;
       }
     break;
+    case node_mem_op:
+      tabs(n);
+      printf("memory ");
+
+      if(root->data.s_node_mem_op.is_read)
+      {
+        printf("read from index "); 
+        
+        if(root->data.s_node_mem_op.arg1.is_var)
+          printf("%s ", root->data.s_node_mem_op.arg1.data.name);
+        else
+          printf("%d ", (int)root->data.s_node_mem_op.arg1.data.val);
+
+        printf("into var %s\n", root->data.s_node_mem_op.arg2.data.name);
+      }
+      else
+      {
+        printf("write to index "); 
+        
+        if(root->data.s_node_mem_op.arg1.is_var)
+          printf("%s ", root->data.s_node_mem_op.arg1.data.name);
+        else
+          printf("%d ", (int)root->data.s_node_mem_op.arg1.data.val);
+
+        printf("from ");
+
+        if(root->data.s_node_mem_op.arg2.is_var)        
+          printf("var %s\n", root->data.s_node_mem_op.arg2.data.name);
+        else
+          printf("val %lf\n", root->data.s_node_mem_op.arg2.data.val);
+      }
+    break;
     case node_print:
       tabs(n);
       printf("print: ");
       if(root->data.s_node_print.is_arg)
       {
         if(root->data.s_node_print.arg1.is_var)
-          printf("var: %s ", root->data.s_node_print.arg1.data.name);
+          printf("var: %s", root->data.s_node_print.arg1.data.name);
         else
-          printf("val: %lf ", root->data.s_node_print.arg1.data.val);
+          printf("val: %lf", root->data.s_node_print.arg1.data.val);
       }
       else
         printf("%s", root->data.s_node_print.message);

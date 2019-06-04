@@ -1,6 +1,8 @@
 #ifndef _ONELINER_H
 #define _ONELINER_H 1
 
+#define MEM_SIZE 16384
+#define MAX_TOKEN_NUM 2048
 #define MAX_FUNC_NUM 128
 #define MAX_VAR_NUM 1024
 #define MAX_FUNC_ARG_NUM 16
@@ -42,7 +44,9 @@ typedef enum
   _set,
   _print,
   _return,
-  _newline
+  _newline,
+  _read,
+  _write
 } _keyword_type;
 
 typedef enum
@@ -53,10 +57,11 @@ typedef enum
   _div,
   _and,
   _or,
-//  _not,
+  _not,
   _equal,
   _less,
-  _greater
+  _greater,
+  _mod
 } _operator_type;
 
 typedef struct
@@ -83,8 +88,9 @@ struct node
     node_while,       //**
     node_if,          //**
     node_var_decl,    //**
-    node_var_set,     //*
-    node_print        //*
+    node_var_set,     //**
+    node_print,       //**
+    node_mem_op
   } type;
 
   union
@@ -143,6 +149,12 @@ struct node
       node *lbody;
       node *rbody;
     } s_node_if;
+    struct
+    {
+      char is_read;
+      arg arg1;
+      arg arg2;
+    } s_node_mem_op;
   } data;
 
   node *next;
@@ -171,11 +183,12 @@ char is_uppercase(char);
 char tokenize(char*, int, token*);
 void parse_line(char*, token*, int*);
 void error(char*, int);
-node* build_tree_sub(token*, int, int, int*, func*, int*, var*, int*);
-node *build_tree(token*, int, func*, int*, var*, int*);
+node* build_tree_sub(token*, int, int, int*, func*, int*, var*, int*, void**, int*);
+node *build_tree(token*, int, func*, int*, var*, int*, void**, int*);
 void tabs(int);
 void print_tree(node*, int);
 void print_out(node*, var*, int);
-double execute(node*, func* functions, int, var*, int*, char*);
+double execute(node*, func* functions, int, var*, int*, char*, double*);
+void add_ptr(void*, void**, int*);
 
 #endif
