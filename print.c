@@ -168,11 +168,11 @@ void print_out(node *root, var *variables, int var_num)
       val = root->data.s_node_print.arg1.data.val;
     }
     
-    printf("%lf ", val);
+    printf("%lf", val);
   }
   else
   {
-    printf("%s ", root->data.s_node_print.message);
+    printf("%s", root->data.s_node_print.message);
   }
 
   if(root->data.s_node_print.newline)

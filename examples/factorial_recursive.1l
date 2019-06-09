@@ -1,1 +1,1 @@
-PROGRAMBEGIN FUNC factorial_rec n BEGIN VAR nn VAR ret SET nn SUB n 1 IF n SET nn factorial_rec nn SET ret MULT nn n ELSE SET ret 1 FI RETURN ret END FUNC main BEGIN VAR w SET w factorial_rec 6 PRINT 'Factorial(6) recursively is: ' PRINT w NEWLINE RETURN END PROGRAMEND
+IT'S SHOWTIME FUNC factorial_rec n BEGIN VAR nn VAR ret SET nn SUB n 1 IF n SET nn factorial_rec nn SET ret MULT nn n ELSE SET ret 1 FI RETURN ret END FUNC main BEGIN VAR w SET w factorial_rec 6 PRINT "Factorial(6) recursively is: " PRINT w NEWLINE RETURN END PROGRAMEND

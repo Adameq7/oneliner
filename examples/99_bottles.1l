@@ -1,0 +1,1 @@
+IT'S SHOWTIME FUNC main BEGIN VAR x SET x 99 WHILE x DO PRINT x PRINT " bottles of beer on the wall, " PRINT x PRINT " bottles of beer." NEWLINE PRINT "Take one down, pass it around, " SET x SUB x 1 PRINT x PRINT " bottles of beer on the wall..." NEWLINE DONE RETURN END PROGRAMEND

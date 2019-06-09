@@ -1,1 +1,1 @@
-PROGRAMBEGIN FUNC factorial_iter n BEGIN VAR ret VAR nn SET ret n SET nn SUB n 1 WHILE nn DO SET n SUB n 1 SET nn SUB nn 1 SET ret MULT ret n DONE RETURN ret END FUNC main BEGIN VAR w SET w factorial_iter 6 PRINT 'Factorial(6) iteratively is: ' PRINT w NEWLINE RETURN END PROGRAMEND
+PROGRAMBEGIN FUNC factorial_iter n BEGIN VAR ret VAR nn SET ret n SET nn SUB n 1 WHILE nn DO SET n SUB n 1 SET nn SUB nn 1 SET ret MULT ret n DONE RETURN ret END FUNC main BEGIN VAR w SET w factorial_iter 6 PRINT "Factorial(6) iteratively is: " PRINT w NEWLINE RETURN END PROGRAMEND

@@ -3,7 +3,7 @@
 #include <string.h>
 #include "oneliner.h"
 
-const char program_begin_string[] = "PROGRAMBEGIN";
+const char program_begin_string[] = "IT'S SHOWTIME";
 const char program_end_string[] = "PROGRAMEND";
 const char func_string[] = "FUNC";
 const char begin_string[] = "BEGIN";
@@ -45,38 +45,40 @@ char tokenize(char *word, int length, token *new_token)
   
   new_token->name = name;
 
-  if(word[0] != '\'')
-  {
-    if(!strcmp(name, op_add_string)){new_token->type = _operator; new_token->type_2.operator_type = _add; return 1;};
-    if(!strcmp(name, op_sub_string)){new_token->type = _operator; new_token->type_2.operator_type = _sub; return 1;};
-    if(!strcmp(name, op_mult_string)){new_token->type = _operator; new_token->type_2.operator_type = _mult; return 1;};
-    if(!strcmp(name, op_div_string)){new_token->type = _operator; new_token->type_2.operator_type = _div; return 1;};
-    if(!strcmp(name, op_and_string)){new_token->type = _operator; new_token->type_2.operator_type = _and; return 1;};
-    if(!strcmp(name, op_or_string)){new_token->type = _operator; new_token->type_2.operator_type = _or; return 1;};
-    if(!strcmp(name, op_not_string)){new_token->type = _operator; new_token->type_2.operator_type = _not; return 1;};
-    if(!strcmp(name, op_equal_string)){new_token->type = _operator; new_token->type_2.operator_type = _equal; return 1;};
-    if(!strcmp(name, op_less_string)){new_token->type = _operator; new_token->type_2.operator_type = _less; return 1;};
-    if(!strcmp(name, op_greater_string)){new_token->type = _operator; new_token->type_2.operator_type = _greater; return 1;};
-    if(!strcmp(name, op_mod_string)){new_token->type = _operator; new_token->type_2.operator_type = _mod; return 1;};
+  int res = 0;
 
-    if(!strcmp(name, func_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _func; return 1;};
-    if(!strcmp(name, begin_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _begin; return 1;};
-    if(!strcmp(name, end_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _end; return 1;};
-    if(!strcmp(name, while_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _while; return 1;};
-    if(!strcmp(name, if_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _if; return 1;};
-    if(!strcmp(name, else_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _else; return 1;};
-    if(!strcmp(name, var_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _var; return 1;};
-    if(!strcmp(name, set_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _set; return 1;};
-    if(!strcmp(name, print_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _print; return 1;};
-    if(!strcmp(name, return_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _return; return 1;};
-    if(!strcmp(name, fi_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _fi; return 1;};
-    if(!strcmp(name, done_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _done; return 1;};
-    if(!strcmp(name, do_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _do; return 1;};
-    if(!strcmp(name, program_begin_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _program_begin; return 1;};
-    if(!strcmp(name, program_end_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _program_end; return 1;};
-    if(!strcmp(name, newline_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _newline; return 1;};
-    if(!strcmp(name, read_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _read; return 1;};
-    if(!strcmp(name, write_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _write; return 1;};
+  if(word[0] != '\"')
+  {
+    if(!strcmp(name, op_add_string)){new_token->type = _operator; new_token->type_2.operator_type = _add; res += 1;};
+    if(!strcmp(name, op_sub_string)){new_token->type = _operator; new_token->type_2.operator_type = _sub; res += 1;};
+    if(!strcmp(name, op_mult_string)){new_token->type = _operator; new_token->type_2.operator_type = _mult; res += 1;};
+    if(!strcmp(name, op_div_string)){new_token->type = _operator; new_token->type_2.operator_type = _div; res += 1;};
+    if(!strcmp(name, op_and_string)){new_token->type = _operator; new_token->type_2.operator_type = _and; res += 1;};
+    if(!strcmp(name, op_or_string)){new_token->type = _operator; new_token->type_2.operator_type = _or; res += 1;};
+    if(!strcmp(name, op_not_string)){new_token->type = _operator; new_token->type_2.operator_type = _not; res += 1;};
+    if(!strcmp(name, op_equal_string)){new_token->type = _operator; new_token->type_2.operator_type = _equal; res += 1;};
+    if(!strcmp(name, op_less_string)){new_token->type = _operator; new_token->type_2.operator_type = _less; res += 1;};
+    if(!strcmp(name, op_greater_string)){new_token->type = _operator; new_token->type_2.operator_type = _greater; res += 1;};
+    if(!strcmp(name, op_mod_string)){new_token->type = _operator; new_token->type_2.operator_type = _mod; res += 1;};
+
+    if(!strcmp(name, func_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _func; res += 1;};
+    if(!strcmp(name, begin_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _begin; res += 1;};
+    if(!strcmp(name, end_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _end; res += 1;};
+    if(!strcmp(name, while_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _while; res += 1;};
+    if(!strcmp(name, if_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _if; res += 1;};
+    if(!strcmp(name, else_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _else; res += 1;};
+    if(!strcmp(name, var_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _var; res += 1;};
+    if(!strcmp(name, set_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _set; res += 1;};
+    if(!strcmp(name, print_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _print; res += 1;};
+    if(!strcmp(name, return_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _return; res += 1;};
+    if(!strcmp(name, fi_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _fi; res += 1;};
+    if(!strcmp(name, done_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _done; res += 1;};
+    if(!strcmp(name, do_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _do; res += 1;};
+    if(!strcmp(name, program_begin_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _program_begin; res += 1;};
+    if(!strcmp(name, program_end_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _program_end; res += 1;};
+    if(!strcmp(name, newline_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _newline; res += 1;};
+    if(!strcmp(name, read_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _read; res += 1;};
+    if(!strcmp(name, write_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _write; res += 1;};
 
     if(is_number(word, length)){new_token->type = _number; return 1;};
 
@@ -97,10 +99,18 @@ char tokenize(char *word, int length, token *new_token)
     }
 
     if(lc && !uc){new_token->type = _identifier; return 1;};
+
+    if(res == 1)
+      return 1;
+    else
+      return 0;
   }
   else
   {
-    if((word[0] == '\'') && (word[length - 1] == '\''))
+    if(length == 1)
+      return 0;
+
+    if((word[0] == '\"') && (word[length - 1] == '\"'))
     {
       new_token->type = _string; 
       memcpy(name, word + 1, length - 1);
