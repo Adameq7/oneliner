@@ -140,9 +140,6 @@ double execute(node *root, func *functions, int func_num, var *variables, int *v
               var1->val = (int)val1 < (int)val2;
             break;
             case 9:
-              var1->val = (int)val1 > (int)val2;
-            break;
-            case 10:
               var1->val = (int)val1 % (int)val2;
             break;
           }

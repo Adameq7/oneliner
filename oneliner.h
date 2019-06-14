@@ -60,7 +60,6 @@ typedef enum
   _not,
   _equal,
   _less,
-  _greater,
   _mod
 } _operator_type;
 

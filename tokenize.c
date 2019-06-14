@@ -3,38 +3,40 @@
 #include <string.h>
 #include "oneliner.h"
 
-const char program_begin_string[] = "IT'S SHOWTIME";
-const char program_end_string[] = "PROGRAMEND";
-const char func_string[] = "FUNC";
-const char begin_string[] = "BEGIN";
-const char end_string[] = "END";
-const char while_string[] = "WHILE";
-const char do_string[] = "DO";
-const char done_string[] = "DONE";
-const char if_string[] = "IF";
-const char else_string[] = "ELSE";
-const char fi_string[] = "FI";
-const char var_string[] = "VAR";
-const char set_string[] = "SET";
-const char print_string[] = "PRINT";
-const char return_string[] = "RETURN";
-const char newline_string[] = "NEWLINE";
-const char read_string[] = "READ";
-const char write_string[] = "WRITE";
+const char program_begin_string[] = "GO AHEAD, MAKE MY DAY";                   //Sudden Impact
+const char program_end_string[] = "TERMINATED";                                //Terminator 2: Judgment Day
+const char func_string[] = "ALLOW ME TO BREAK THE ICE";                        //Batman & Robin
+const char begin_string[] = "LET'S ROCK";                                      //Aliens
+const char end_string[] = "COURT'S ADJOURNED";                                 //Judge Dredd
+const char while_string[] = "I HAVE COME HERE";                                //They Live
+const char do_string[] = "TO CHEW BUBBLEGUM AND KICK ASS";                     //They Live
+const char done_string[] = "AND I'M ALL OUT OF BUBBLEGUM";                     //They Live
+const char if_string[] = "GRANT ME REVENGE";                                   //Conan the Barbarian
+const char else_string[] = "AND IF YOU DO NOT LISTEN";                         //Conan the Barbarian
+const char fi_string[] = "THEN TO HELL WITH YOU";                              //Conan the Barbarian
+const char var_string[] = "HERE IS MY INVITATION";                             //True Lies
+const char set_string[] = "SWALLOW THIS";                                      //Evil Dead II
+const char print_string[] = "TALK TO THE HAND";                                //Terminator 3: Rise of the Machines
+const char return_string[] = "I'LL BE BACK";                                   //Terminator
+const char newline_string[] = "ENOUGH TALK";                                   //Conan the Destroyer
+const char read_string[] = "COME GET SOME";                                    //Army of Darkness
+const char write_string[] = "STICK AROUND";                                    //Predator
 
-const char op_add_string[] = "ADD";
-const char op_sub_string[] = "SUB";
-const char op_mult_string[] = "MULT";
-const char op_div_string[] = "DIV";
-const char op_and_string[] = "AND";
-const char op_or_string[] = "OR";
-const char op_not_string[] = "NOT";
-const char op_equal_string[] = "EQUAL";
-const char op_less_string[] = "LESS";
-const char op_greater_string[] = "GREATER";
-const char op_mod_string[] = "MOD";
+const char op_add_string[] = "GIVE YOU A LIFT?";                               //The Running Man
+const char op_sub_string[] = "LET OFF SOME STEAM, BENNETT";                    //Commando
+const char op_mult_string[] = "KNOCK KNOCK";                                   //Predator
+const char op_div_string[] = "HE HAD TO SPLIT";                                //The Running Man
+const char op_and_string[] = "THIS TOWN AIN'T BIG ENOUGH FOR THE BOTH OF US";  //The Western Code
+const char op_or_string[] = "ONE OF US IS IN DEEP TROUBLE";                    //The Running Man
+const char op_not_string[] = "IT'S NOT A TUMOR";                               //Kindergarten Cop
+const char op_equal_string[] = "YOU ARE NOT YOU, YOU ARE ME";                  //Total Recall
+const char op_less_string[] = "YOU'RE A CHOIRBOY COMPARED TO ME";              //End of Days
+const char op_mod_string[] = "KEEP THE CHANGE, YA FILTHY ANIMAL";              //Home Alone
 
-const char operators[]="+-*/&|!=<>%";
+//one of us is in deep trouble
+
+
+const char operators[]="+-*/&|!=<%";
 
 char tokenize(char *word, int length, token *new_token)
 {
@@ -58,7 +60,6 @@ char tokenize(char *word, int length, token *new_token)
     if(!strcmp(name, op_not_string)){new_token->type = _operator; new_token->type_2.operator_type = _not; res += 1;};
     if(!strcmp(name, op_equal_string)){new_token->type = _operator; new_token->type_2.operator_type = _equal; res += 1;};
     if(!strcmp(name, op_less_string)){new_token->type = _operator; new_token->type_2.operator_type = _less; res += 1;};
-    if(!strcmp(name, op_greater_string)){new_token->type = _operator; new_token->type_2.operator_type = _greater; res += 1;};
     if(!strcmp(name, op_mod_string)){new_token->type = _operator; new_token->type_2.operator_type = _mod; res += 1;};
 
     if(!strcmp(name, func_string)){new_token->type = _keyword; new_token->type_2.keyword_type = _func; res += 1;};
