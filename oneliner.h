@@ -6,6 +6,7 @@
 #define MAX_FUNC_NUM 128
 #define MAX_VAR_NUM 1024
 #define MAX_FUNC_ARG_NUM 16
+#define DEBUG 0
 
 typedef enum
 {
@@ -181,7 +182,7 @@ char is_lowercase(char);
 char is_uppercase(char);
 char tokenize(char*, int, token*);
 void parse_line(char*, token*, int*);
-void error(char*, int);
+int error(char*, int);
 node* build_tree_sub(token*, int, int, int*, func*, int*, var*, int*, void**, int*);
 node *build_tree(token*, int, func*, int*, var*, int*, void**, int*);
 void tabs(int);

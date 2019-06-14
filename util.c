@@ -64,10 +64,12 @@ char is_uppercase(char c)
   return (c >= 65) && (c <= 90);
 }
 
-void error(char *msg, int index1)
+int error(char *msg, int index1)
 {
   printf("'%s' at %d\n", msg, index1);
   exit(-1);
+
+  return -1;
 }
 
 void tabs(int n)

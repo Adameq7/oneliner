@@ -39,6 +39,9 @@ double execute(node *root, func *functions, int func_num, var *variables, int *v
     case node_while:
       var1 = is_variable(root->data.s_node_while.condition, variables, new_var_num);
 
+      if(var1 == NULL)
+        error("unknown variable used", -1);
+
       while((int)var1->val)
       {
         execute(root->data.s_node_while.body, functions, func_num, variables, &new_var_num, NULL, memory);
@@ -46,6 +49,9 @@ double execute(node *root, func *functions, int func_num, var *variables, int *v
     break;
     case node_if:
       var1 = is_variable(root->data.s_node_if.condition, variables, new_var_num);
+
+      if(var1 == NULL)
+        error("unknown variable used", -1);
 
       if((int)var1->val)
       {
@@ -63,36 +69,76 @@ double execute(node *root, func *functions, int func_num, var *variables, int *v
       if(root->data.s_node_mem_op.is_read)
       {
         if(root->data.s_node_mem_op.arg1.is_var)
+        {
+          if(is_variable(root->data.s_node_mem_op.arg1.data.name, variables, new_var_num) == NULL)
+            error("unknown variable used", -1);
+          
           index = is_variable(root->data.s_node_mem_op.arg1.data.name, variables, new_var_num)->val;
+        }
         else
           index = (int)root->data.s_node_mem_op.arg1.data.val;
+
+        if(is_variable(root->data.s_node_mem_op.arg2.data.name, variables, new_var_num) == NULL)
+          error("unknown variable used", -1);
+
+        if(index < 0 || index > MEM_SIZE - 1)
+          error("memory index out of bound", -1);
 
         is_variable(root->data.s_node_mem_op.arg2.data.name, variables, new_var_num)->val = memory[index];
       }
       else
       {
         if(root->data.s_node_mem_op.arg1.is_var)
+        {
+          if(is_variable(root->data.s_node_mem_op.arg1.data.name, variables, new_var_num) == NULL)
+            error("unknown variable used", -1);
+
           index = is_variable(root->data.s_node_mem_op.arg1.data.name, variables, new_var_num)->val;
+        }
         else
           index = (int)root->data.s_node_mem_op.arg1.data.val;
 
         if(root->data.s_node_mem_op.arg2.is_var)
+        {
+          if(is_variable(root->data.s_node_mem_op.arg2.data.name, variables, new_var_num) == NULL)
+            error("unknown variable used", -1);
+
+          if(index < 0 || index > MEM_SIZE - 1)
+            error("memory index out of bound", -1);
+
           memory[index] = is_variable(root->data.s_node_mem_op.arg2.data.name, variables, new_var_num)->val;
+        }
         else
+        {
+          if(index < 0 || index > MEM_SIZE - 1)
+            error("memory index out of bound", -1);
+
           memory[index] = root->data.s_node_mem_op.arg2.data.val;
+        }
       }
     break;
     case node_var_set:
       var1 = is_variable(root->data.s_node_var_set.var_name, variables, new_var_num); 
+
+      if(var1 == NULL)
+        error("unknown variable used", -1);
 
       switch(root->data.s_node_var_set.type)
       {
         case 0:
           function = is_function(root->data.s_node_var_set.body.func.name, functions, func_num);
 
+          if(function == NULL)
+            error("unknown function used", -1);
+
           for(int i = 0; i < function->func_decl_node->data.s_node_func_decl.arg_num; i++)
             if(root->data.s_node_var_set.body.func.args[i].is_var)
+            {
+              if(is_variable(root->data.s_node_var_set.body.func.args[i].data.name, variables, new_var_num) == NULL)
+                error("unknown variable used", -1);
+
               arg_vals[i] = is_variable(root->data.s_node_var_set.body.func.args[i].data.name, variables, new_var_num)->val;
+            }
             else
               arg_vals[i] = root->data.s_node_var_set.body.func.args[i].data.val;
  
@@ -104,10 +150,14 @@ double execute(node *root, func *functions, int func_num, var *variables, int *v
         break;
         case 1:
           val1 = root->data.s_node_var_set.body.operation.arg1.is_var ?
-                 is_variable(root->data.s_node_var_set.body.operation.arg1.data.name, variables, new_var_num)->val :
+                 (is_variable(root->data.s_node_var_set.body.operation.arg1.data.name, variables, new_var_num) == NULL ?
+                 error("unknown variable used", -1) :
+                 is_variable(root->data.s_node_var_set.body.operation.arg1.data.name, variables, new_var_num)->val) :
                  root->data.s_node_var_set.body.operation.arg1.data.val;
           val2 = root->data.s_node_var_set.body.operation.arg2.is_var ?
-                 is_variable(root->data.s_node_var_set.body.operation.arg2.data.name, variables, new_var_num)->val :
+                 (is_variable(root->data.s_node_var_set.body.operation.arg2.data.name, variables, new_var_num) == NULL ?
+                 error("unknown variable used", -1) :
+                 is_variable(root->data.s_node_var_set.body.operation.arg2.data.name, variables, new_var_num)->val) :
                  root->data.s_node_var_set.body.operation.arg2.data.val;
 
           switch(root->data.s_node_var_set.body.operation.operation)
@@ -146,7 +196,9 @@ double execute(node *root, func *functions, int func_num, var *variables, int *v
         break;
         case 2:
           var1-> val = root->data.s_node_var_set.body.copy.arg1.is_var ?
-                       is_variable(root->data.s_node_var_set.body.copy.arg1.data.name, variables, new_var_num)->val :
+                       (is_variable(root->data.s_node_var_set.body.copy.arg1.data.name, variables, new_var_num) == NULL ?
+                       error("unknown variable used", -1) :
+                       is_variable(root->data.s_node_var_set.body.copy.arg1.data.name, variables, new_var_num)->val) :
                        root->data.s_node_var_set.body.copy.arg1.data.val;
         break;
       }

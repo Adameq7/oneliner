@@ -9,7 +9,8 @@ void parse_line(char *line, token *tokens, int *token_number)
 
   while(1)
   {
-    printf("%d %d\n", index1, index2);
+    if(DEBUG)
+      printf("%d %d\n", index1, index2);
 
     if(is_forbidden(line[index2]))
     {
@@ -42,8 +43,9 @@ void parse_line(char *line, token *tokens, int *token_number)
     }
   }
 
-  for(int i = 0; i < *token_number; i++)
-    printf(" - %s %d %d\n", tokens[i].name, tokens[i].type, tokens[i].type_2.keyword_type); 
+  if(DEBUG)
+    for(int i = 0; i < *token_number; i++)
+      printf(" - %s %d %d\n", tokens[i].name, tokens[i].type, tokens[i].type_2.keyword_type); 
 
   return;
 }
