@@ -53,6 +53,8 @@ int main(int argc, char **argv)
   node *root; 
   double res;
 
+  char *dummy_return = "dummy_return";
+
   while(1)
   {
     for(int i = 0; i < MEM_SIZE; i++)
@@ -63,7 +65,8 @@ int main(int argc, char **argv)
     var_num = 0;
     pointer_num = 0;
 
-//    printf("---\n");
+    create_var(variables, &var_num, dummy_return);
+
     line = readline(NULL);
 
     if(line == NULL)
@@ -84,7 +87,7 @@ int main(int argc, char **argv)
       printf("\n------------END PRINTING TREE.------------\n");
     }
 
-    var_num = 0;
+//    var_num = 0;
 
     printf("\n------------BEGIN EXECUTION:------------\n");
     res = execute(is_function("main", functions, func_num)->func_decl_node->data.s_node_func_decl.body, functions, func_num, variables, &var_num, NULL, memory);

@@ -3,11 +3,6 @@
 
 double execute(node *root, func *functions, int func_num, var *variables, int *var_num, char* ret_var, double* memory)
 {
-/*
-  for(int i = 0; i < *var_num; i++)
-    printf("| %s = %lf ", variables[i].name, variables[i].val);
-  printf("\n");
-*/
   if(root == NULL)
     return 0;
 

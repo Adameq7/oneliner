@@ -161,6 +161,9 @@ void print_out(node *root, var *variables, int var_num)
   {
     if(root->data.s_node_print.arg1.is_var)
     {
+      if(is_variable(root->data.s_node_print.arg1.data.name, variables, var_num) == NULL)
+        error("unknown variable used", -1);
+
       val = is_variable(root->data.s_node_print.arg1.data.name, variables, var_num)->val;
     }
     else
