@@ -30,11 +30,8 @@ const char op_and_string[] = "THIS TOWN AIN'T BIG ENOUGH FOR THE BOTH OF US";  /
 const char op_or_string[] = "ONE OF US IS IN DEEP TROUBLE";                    //The Running Man
 const char op_not_string[] = "IT'S NOT A TUMOR";                               //Kindergarten Cop
 const char op_equal_string[] = "YOU ARE NOT YOU, YOU ARE ME";                  //Total Recall
-const char op_less_string[] = "YOU'RE A CHOIRBOY COMPARED TO ME";              //End of Days
+const char op_less_string[] = "YOU'RE A FUCKING CHOIRBOY COMPARED TO ME";              //End of Days
 const char op_mod_string[] = "KEEP THE CHANGE, YA FILTHY ANIMAL";              //Home Alone
-
-//one of us is in deep trouble
-
 
 const char operators[]="+-*/&|!=<%";
 

@@ -1,11 +1,11 @@
 #ifndef _ONELINER_H
 #define _ONELINER_H 1
 
-#define MEM_SIZE 16384
-#define MAX_TOKEN_NUM 2048
-#define MAX_FUNC_NUM 128
-#define MAX_VAR_NUM 1024
-#define MAX_FUNC_ARG_NUM 16
+#define MEM_SIZE 100000
+#define MAX_TOKEN_NUM 10000
+#define MAX_FUNC_NUM 100
+#define MAX_VAR_NUM 100
+#define MAX_FUNC_ARG_NUM 20
 #define DEBUG 0
 
 typedef enum
